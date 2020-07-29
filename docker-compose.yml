@@ -1,0 +1,61 @@
+version: "3.7"
+services:
+  db:
+    # image: mysql:8.0
+    build: ./mysql/
+    container_name: mysql8_with_tomcat
+    
+    environment:
+      MYSQL_DATABASE: 'db'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'dev'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'ax2'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '33306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - ./data:/var/lib/mysql # for data
+      - ./scripts:/scripts
+      - ./mysql/startscript:/docker-entrypoint-initdb.d
+    networks:
+      - tomcat_network
+
+  web:
+    image:  tomcat:9.0.37-jdk8
+    container_name: tomcat_with_mysql
+    # Environment variables do not appear to be getting loaded the first time Tomcat starts!
+    environment:
+      JDBC_URL: jdbc:mysql://db:3306/example_db?connectTimeout=0&amp;socketTimeout=0&amp;autoReconnect=true
+      JDBC_USER: example_db_user
+      JDBC_PASS: example_db_pass
+    # ports:
+    #  - "80:8080"
+    volumes:
+      - ./tomcat/webapps:/usr/local/tomcat/webapps
+    networks:
+      - tomcat_network
+
+  nginx:
+    image: nginx:1.15-alpine
+    container_name: nginx_with_tomcat
+    restart: unless-stopped
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      # - ./data/certbot/conf:/etc/letsencrypt
+      # - ./data/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - tomcat_network
+
+networks:
+  tomcat_network:
+    driver: bridge
