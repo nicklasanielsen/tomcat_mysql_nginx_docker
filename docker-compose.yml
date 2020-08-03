@@ -3,7 +3,7 @@ services:
   db:
     # image: mysql:8.0
     build: ./mysql/
-    container_name: mysql8_with_tomcat
+    container_name: mysql8_3sem
     
     environment:
       # MYSQL_DATABASE: 'db'
@@ -30,7 +30,7 @@ services:
   web:
     # image:  tomcat:9.0.37-jdk8
     build: ./tomcat/
-    container_name: tomcat_with_mysql
+    container_name: tomcat_3sem
     # Environment variables do not appear to be getting loaded the first time Tomcat starts!
     environment:
       JDBC_URL: jdbc:mysql://db:3306/example_db?connectTimeout=0&amp;socketTimeout=0&amp;autoReconnect=true
@@ -45,7 +45,7 @@ services:
 
   nginx:
     image: nginx:1.15-alpine
-    container_name: nginx_with_tomcat
+    container_name: nginx_3sem
     restart: unless-stopped
     volumes:
       - ./nginx/conf:/etc/nginx/conf.d
