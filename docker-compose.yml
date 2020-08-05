@@ -33,9 +33,9 @@ services:
     container_name: tomcat_3sem
     # Environment variables do not appear to be getting loaded the first time Tomcat starts!
     environment:
-      CONNECTION_STR: jdbc:mysql://db:3306/database_name
-      USER: example_db_user # database user to use in tomcat apps
-      PW: example_db_pass # database password
+      CONNECTION_STR: "jdbc:mysql://db:3306/database_name"
+      USER: "example_db_user" # database user to use in tomcat apps
+      PW: "example_db_pass" # database password
       DEPLOYED: "true"
 
     # ports:
