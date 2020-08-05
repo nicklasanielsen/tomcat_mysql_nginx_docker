@@ -41,10 +41,12 @@ services:
     # ports:
     #  - "8080:8080"
     volumes:
-    #  - ./tomcat/webapps:/usr/local/tomcat/webapps
-      - /tomcat/setenv.sh:/usr/local/tomcat/bin/setenv.sh
+      - ./tomcat/webapps:/usr/local/tomcat/webapps
+      - ./tomcat/setenv.sh:/usr/local/tomcat/bin/setenv.sh
     networks:
       - tomcat_network
+    # copy the tomcat manager app and make it accessible outside of localhost (then start tomcat)
+    command: sh -c "cp -r /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager && mv /tmp/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml && catalina.sh run"
 
   nginx:
     image: nginx:1.15-alpine
