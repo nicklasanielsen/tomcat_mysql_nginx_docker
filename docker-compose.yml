@@ -42,7 +42,7 @@ services:
     #  - "8080:8080"
     volumes:
     #  - ./tomcat/webapps:/usr/local/tomcat/webapps
-      - /tomcat/set_env.sh:/usr/local/tomcat/bin/set_env.sh
+      - /tomcat/setenv.sh:/usr/local/tomcat/bin/setenv.sh
     networks:
       - tomcat_network
 
