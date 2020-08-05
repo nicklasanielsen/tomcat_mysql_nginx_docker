@@ -36,6 +36,7 @@ services:
       JDBC_URL: jdbc:mysql://db:3306/example_db?connectTimeout=0&amp;socketTimeout=0&amp;autoReconnect=true
       JDBC_USER: example_db_user
       JDBC_PASS: example_db_pass
+      DEPLOYED: "true"
     # ports:
     #  - "8080:8080"
     volumes:
