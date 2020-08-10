@@ -1,4 +1,0 @@
-export DEPLOYED="DEV_ON_DIGITAL_OCEAN"
-export USER="YOUR_DB_USER"
-export PW="YOUR_DB_PASSWORD"
-export CONNECTION_STR="jdbc:mysql://localhost:3306/NAME_OF_YOUR_DB"

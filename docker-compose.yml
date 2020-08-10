@@ -6,12 +6,6 @@ services:
     container_name: mysql8_3sem
     
     environment:
-      # MYSQL_DATABASE: 'db'
-      # # So you don't have to use root, but you can if you like
-      # MYSQL_USER: 'dev'
-      # # You can use whatever password you like
-      # MYSQL_PASSWORD: 'ax2'
-      # Password for root access
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
@@ -19,6 +13,7 @@ services:
     expose:
       # Opens port 3306 on the container
       - '3306'
+
       # Where our data will be persisted
     volumes:
       - ./data:/var/lib/mysql # for data
@@ -31,25 +26,31 @@ services:
     # image:  tomcat:9.0.37-jdk8
     build: ./tomcat/
     container_name: tomcat_3sem
-    # Environment variables do not appear to be getting loaded the first time Tomcat starts!
+
+    # ---- IMPORTANT ----
+    # In production (on digitalOcean)  replace ALL values below with your own secret values
+    # NEVER COMMIT/PUSH this file/project
     environment:
-      CONNECTION_STR: "jdbc:mysql://db:3306/database_name"
-      USER: "example_db_user" # database user to use in tomcat apps
-      PW: "example_db_pass" # database password
-      DEPLOYED: "true"
+      CONNECTION_STR: "jdbc:mysql://db:3306/startcode"
+      USER: "dev" # database user to use in tomcat apps
+      PW: "ax2" # database password
+      DEPLOYED: "PROD"
 
     # ports:
     #  - "8080:8080"
     volumes:
       - ./tomcat/webapps:/usr/local/tomcat/webapps
-      - ./tomcat/setenv.sh:/usr/local/tomcat/bin/setenv.sh
+      - ./tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+ 
     networks:
       - tomcat_network
-    # copy the tomcat manager app and make it accessible outside of localhost (then start tomcat)
+    
+      # copy the tomcat manager app and make it accessible outside of localhost (then start tomcat)
     command: sh -c "cp -r /usr/local/tomcat/webapps.dist/manager /usr/local/tomcat/webapps/manager && mv /tmp/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml && catalina.sh run"
-
+    
   nginx:
-    image: nginx:1.15-alpine
+    ##image: nginx:1.15-alpine
+    build: "./nginx"
     container_name: nginx_3sem
     restart: unless-stopped
     volumes:
