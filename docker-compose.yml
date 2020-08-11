@@ -36,8 +36,8 @@ services:
       PW: "ax2" # database password
       DEPLOYED: "PROD"
 
-    # ports:
-    #  - "8080:8080"
+    ports:
+      - "8080:8080"
     volumes:
       - ./tomcat/webapps:/usr/local/tomcat/webapps
       - ./tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
@@ -55,10 +55,11 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx-letsencrypt:/etc/letsencrypt
       # - ./data/certbot/conf:/etc/letsencrypt
       # - ./data/certbot/www:/var/www/certbot
-    ports:
-      - "80:80"
+    # ports:
+      # - "80:80"
       # - "443:443"
     networks:
       - tomcat_network
