@@ -4,6 +4,7 @@ services:
     # image: mysql:8.0
     build: ./mysql/
     container_name: mysql8_3sem
+    restart: unless-stopped
     
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
@@ -26,6 +27,7 @@ services:
     # image:  tomcat:9.0.37-jdk8
     build: ./tomcat/
     container_name: tomcat_3sem
+    restart: unless-stopped
 
     # ---- IMPORTANT ----
     # In production (on digitalOcean)  replace ALL values below with your own secret values
